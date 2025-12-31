@@ -66,7 +66,6 @@ export async function createSpot(data: SpotCreateDto) {
 	if (existing) {
 		categoryId = existing.id;
 	} else {
-		// 2. создаём категорию
 		const createCatRes = await authFetch(`${API_URL}/SpotCategory/Create`, {
 		method: 'POST',
 		headers: { 'Content-Type': 'application/json' },
