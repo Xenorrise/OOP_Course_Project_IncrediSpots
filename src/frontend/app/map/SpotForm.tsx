@@ -3,16 +3,16 @@
 import { useState } from 'react';
 
 export type CategoryDto = {
-  name: string;
-  emoji: string;
+  Name: string;
+  Emoji: string;
 };
 
 export type SpotCreateDto = {
-  title: string;
-  description: string;
-  latitude: number;
-  longitude: number;
-  category: CategoryDto;
+  Title: string;
+  Description: string;
+  Latitude: number;
+  Longitude: number;
+  Category: CategoryDto;
 };
 
 type Props = {
@@ -40,13 +40,13 @@ export function SpotForm({ lat, lng, onSubmit, onCancel }: Props) {
     if (!title.trim() || !categoryName.trim() || !categoryEmoji.trim()) return;
 
     onSubmit({
-      title,
-      description,
-      latitude: lat,
-      longitude: lng,
-      category: {
-        name: categoryName,
-        emoji: categoryEmoji,
+      Title: title,
+      Description: description,
+      Latitude: lat,
+      Longitude: lng,
+      Category: {
+        Name: categoryName,
+        Emoji: categoryEmoji,
       },
     });
   }

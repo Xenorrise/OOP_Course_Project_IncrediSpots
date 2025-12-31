@@ -1,3 +1,4 @@
+using System.Security.Claims;
 using IncrediSpots.API.Contracts;
 using IncrediSpots.App.Interfaces;
 using IncrediSpots.DataAccess.Entities;
@@ -33,13 +34,15 @@ public class SpotController : ControllerBase
 	[HttpPost]
 	public async Task<IActionResult> Create([FromBody]SpotRequest request)
 	{	
+		var userId = int.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier)!);
+
 		var spot = new Spot(
 			request.Title,
 			request.Description,
 			request.CategoryId,
 			request.Latitude,
 			request.Longitude,
-			request.UserId
+			userId
 		);
 		await _spotService.CreateSpotAsync(spot);
 		return Ok(spot);
@@ -68,9 +71,16 @@ public class SpotController : ControllerBase
 	}
 
 	[HttpPost("{id}")]
-	public async Task<IActionResult> Like(int id)
+	[ActionName("Vote")]
+	public async Task<IActionResult> Vote(int id, [FromBody]VoteRequest request)
 	{
-		await _spotService.LikeSpotAsync(id);
-		return NoContent();
+		var spot = await _spotService.VoteSpotAsync(id, request.value);
+
+		var response = new VoteResponse(
+			spot.Rating,
+			request.value
+		);
+		
+		return Ok(response);
 	}
 }

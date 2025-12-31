@@ -19,6 +19,13 @@ public class SpotCategoryRepository : ISpotCategoryRepository
 		return category;
 	}
 
+	public async Task<SpotCategoryModel?> GetByNameAndEmoji(string name, string emoji)
+	{
+		var category = _context.SpotCategories.FirstOrDefault(c => c.Name == name && c.Emoji == emoji);
+		return category;
+	}
+
+
 	public async Task<IReadOnlyList<SpotCategoryModel>> GetAllAsync()
 	{
 		return await _context.Set<SpotCategoryModel>().ToListAsync();

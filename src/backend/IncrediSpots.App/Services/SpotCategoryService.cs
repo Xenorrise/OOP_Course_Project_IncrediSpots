@@ -24,6 +24,11 @@ public class SpotCategoryService : ISpotCategoryService
 		return await _spotCategoryRepository.GetByIdAsync(id);
 	}
 
+	public async Task<SpotCategoryModel?> GetSpotCategoryByNameAndEmojiAsync(string name, string emoji)
+	{
+		return await _spotCategoryRepository.GetByNameAndEmoji(name, emoji);
+	}
+
 	public async Task<SpotCategoryModel> CreateSpotCategoryAsync(SpotCategory category)
 	{
 		var categoryModel = SpotCategoryMapper.From(category);

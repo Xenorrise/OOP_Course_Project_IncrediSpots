@@ -22,6 +22,39 @@ namespace IncrediSpots.DataAccess.Data.Migrations
 
             NpgsqlModelBuilderExtensions.UseIdentityByDefaultColumns(modelBuilder);
 
+            modelBuilder.Entity("IncrediSpots.Domain.Models.CommentModel", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
+
+                    b.Property<int>("AuthorId")
+                        .HasColumnType("integer");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("timestamp with time zone")
+                        .HasDefaultValueSql("CURRENT_TIMESTAMP");
+
+                    b.Property<int>("SpotId")
+                        .HasColumnType("integer");
+
+                    b.Property<string>("Text")
+                        .IsRequired()
+                        .HasMaxLength(1000)
+                        .HasColumnType("character varying(1000)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("AuthorId");
+
+                    b.HasIndex("SpotId");
+
+                    b.ToTable("Comments");
+                });
+
             modelBuilder.Entity("IncrediSpots.Domain.Models.SpotCategoryModel", b =>
                 {
                     b.Property<int>("Id")
@@ -102,6 +135,53 @@ namespace IncrediSpots.DataAccess.Data.Migrations
                     b.ToTable("spots", (string)null);
                 });
 
+            modelBuilder.Entity("IncrediSpots.Domain.Models.UserModel", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<string>("Email")
+                        .IsRequired()
+                        .HasMaxLength(255)
+                        .HasColumnType("character varying(255)");
+
+                    b.Property<string>("PasswordHash")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("Email")
+                        .IsUnique();
+
+                    b.ToTable("users", (string)null);
+                });
+
+            modelBuilder.Entity("IncrediSpots.Domain.Models.CommentModel", b =>
+                {
+                    b.HasOne("IncrediSpots.Domain.Models.UserModel", "Author")
+                        .WithMany("Comments")
+                        .HasForeignKey("AuthorId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("IncrediSpots.Domain.Models.SpotModel", "Spot")
+                        .WithMany("Comments")
+                        .HasForeignKey("SpotId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Author");
+
+                    b.Navigation("Spot");
+                });
+
             modelBuilder.Entity("IncrediSpots.Domain.Models.SpotModel", b =>
                 {
                     b.HasOne("IncrediSpots.Domain.Models.SpotCategoryModel", "Category")
@@ -110,7 +190,23 @@ namespace IncrediSpots.DataAccess.Data.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
+                    b.HasOne("IncrediSpots.Domain.Models.UserModel", "User")
+                        .WithMany()
+                        .HasForeignKey("UserId");
+
                     b.Navigation("Category");
+
+                    b.Navigation("User");
+                });
+
+            modelBuilder.Entity("IncrediSpots.Domain.Models.SpotModel", b =>
+                {
+                    b.Navigation("Comments");
+                });
+
+            modelBuilder.Entity("IncrediSpots.Domain.Models.UserModel", b =>
+                {
+                    b.Navigation("Comments");
                 });
 #pragma warning restore 612, 618
         }

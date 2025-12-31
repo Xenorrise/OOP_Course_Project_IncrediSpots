@@ -9,4 +9,5 @@ public interface ISpotRepository
     Task AddAsync(SpotModel spot);
     Task UpdateAsync(SpotModel newSpot);
     Task DeleteAsync(int id);
+    Task<SpotModel> VoteAsync(int id, int userVote);
 }

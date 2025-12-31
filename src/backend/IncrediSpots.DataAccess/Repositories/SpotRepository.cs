@@ -21,7 +21,7 @@ public class SpotRepository : ISpotRepository
 
 	public async Task<IReadOnlyList<SpotModel>> GetAllAsync()
 	{
-		return await _context.Set<SpotModel>().ToListAsync();
+		return await _context.Spots.Include(s => s.Category).ToListAsync();
 	}
 
 	public async Task AddAsync(SpotModel spot)
@@ -49,5 +49,19 @@ public class SpotRepository : ISpotRepository
 		var spot = await _context.Spots.FindAsync(id) ?? throw new Exception($"Spot with ID {id} not found");
 		_context.Spots.Remove(spot);
 		await _context.SaveChangesAsync();
+	}
+
+	public async Task<SpotModel> VoteAsync(int id, int userVote)
+	{
+		var spot = await _context.Spots.FindAsync(id) ?? throw new Exception($"Spot with ID {id} not found");
+		if(userVote == 1)
+		{
+			spot.UpVote();
+		} else if(userVote == -1)
+		{
+			spot.DownVote();
+		}
+		await _context.SaveChangesAsync();
+		return spot;
 	}
 }

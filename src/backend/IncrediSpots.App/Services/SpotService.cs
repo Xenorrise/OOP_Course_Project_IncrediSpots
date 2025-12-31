@@ -28,7 +28,7 @@ public class SpotService : ISpotService
 
 	public async Task<SpotModel> CreateSpotAsync(Spot spot)
 	{
-		var categoryModel = await _spotCategoryRepository.GetByIdAsync(spot.CategoryId) ?? throw new Exception("Category not found");
+		var categoryModel = await _spotCategoryRepository.GetByIdAsync(spot.CategoryId);
 		var spotModel = SpotMapper.From(spot, categoryModel);
 
 		await _spotRepository.AddAsync(spotModel);
@@ -48,11 +48,11 @@ public class SpotService : ISpotService
 	{
 		await _spotRepository.DeleteAsync(id);
 	}
-// int userId
-	public async Task LikeSpotAsync(int id)
+	
+	public async Task<SpotModel> VoteSpotAsync(int id, int userVote)
 	{
-		var spotModel = await _spotRepository.GetByIdAsync(id);
-		spotModel.UpVote();
+		var spot = await _spotRepository.VoteAsync(id, userVote);
+		return spot;
 	}
 }
 

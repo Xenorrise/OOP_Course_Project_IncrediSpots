@@ -5,6 +5,8 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace IncrediSpots.API.Controllers;
 
+[ApiController]
+[Route("[controller]/[action]")]
 public class SpotCategoryController : ControllerBase
 {
 	private readonly ISpotCategoryService _categoryService;
@@ -17,34 +19,50 @@ public class SpotCategoryController : ControllerBase
 	[HttpGet]
 	public async Task<IActionResult> GetAll()
 	{
-		var spot = await _categoryService.GetAllSpotCategoriesAsync();
-		return Ok(spot);
+		var category = await _categoryService.GetAllSpotCategoriesAsync();
+		return Ok(category);
 	}
 
 	[HttpGet("{id}")]
 	public async Task<IActionResult> GetById(int id)
 	{
-		var spot = await _categoryService.GetSpotCategoryByIdAsync(id);
-		return Ok(spot);
+		var category = await _categoryService.GetSpotCategoryByIdAsync(id);
+		return Ok(category);
 	}
-
+	[HttpGet]
+	public async Task<IActionResult> GetByNameAndEmojiAsync(string name, string emoji)
+	{
+		var category = await _categoryService.GetSpotCategoryByNameAndEmojiAsync(name, emoji);
+		return Ok(category);
+	}
 	[HttpPost]
 	public async Task<IActionResult> Create([FromBody]SpotCategoryRequest request)
 	{	
-		var spot = new SpotCategory(
+		var category = new SpotCategory(
 			request.Name,
 			request.Emoji
 		);
-		await _categoryService.CreateSpotCategoryAsync(spot);
-		return Ok(spot);
+		
+		var categoryDomain =  await _categoryService.CreateSpotCategoryAsync(category);
+
+		var response = new SpotCategoryResponse
+    	(
+			categoryDomain.Id,
+			categoryDomain.Name,
+			categoryDomain.Emoji
+		);
+
+		return Ok(response);
 	}
 
+	[HttpPatch("{id}")]
 	public async Task<IActionResult> Update(int id)
 	{
 		//await _spotRepository.GetByIdAsync(id);
 		return NoContent();
 	}
 
+	[HttpDelete("{id}")]
 	public async Task<IActionResult> Delete(int id)
 	{
 		await _categoryService.DeleteSpotCategoryAsync(id);

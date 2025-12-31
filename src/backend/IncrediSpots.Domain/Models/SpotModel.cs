@@ -20,6 +20,10 @@ public class SpotModel
 
 	public int? UserId { get; private set; }
 
+	public UserModel? User { get; set; }
+
+	public ICollection<CommentModel> Comments { get; set; } = new List<CommentModel>();
+
 	protected SpotModel() { }
 
 	public SpotModel(

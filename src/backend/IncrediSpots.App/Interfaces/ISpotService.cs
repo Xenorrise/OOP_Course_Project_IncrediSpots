@@ -9,5 +9,5 @@ public interface ISpotService
     Task<IReadOnlyList<SpotModel>> GetAllSpotsAsync();
     Task UpdateSpotAsync(UpdateSpot updateSpot);
     Task DeleteSpotAsync(int id);
-    Task LikeSpotAsync(int id);
+    Task<SpotModel> VoteSpotAsync(int id, int userVote);
 }

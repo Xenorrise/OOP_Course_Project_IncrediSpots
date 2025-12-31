@@ -1,6 +1,7 @@
 'use client';
 
 import dynamic from 'next/dynamic';
+import HeaderOverlay from './Header';
 
 const MapClient = dynamic(
   () => import('./MapClient'),
@@ -8,5 +9,10 @@ const MapClient = dynamic(
 );
 
 export default function MapWrapper() {
-  return <MapClient />;
+  return (
+    <div style={{ position: 'relative', height: '100%' }}>
+      <MapClient />
+      <HeaderOverlay />
+    </div>
+    );
 }

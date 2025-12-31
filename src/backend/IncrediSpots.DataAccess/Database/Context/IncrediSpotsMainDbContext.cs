@@ -17,6 +17,11 @@ public class IncrediSpotsMainDbContext : DbContext
 
 	public virtual DbSet<SpotCategoryModel> SpotCategories { get; set; }
 
+	public virtual DbSet<CommentModel> Comments { get; set; }
+
+	public virtual DbSet<UserModel> Users { get; set; }
+
+
 	//protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
     //    => optionsBuilder.UseNpgsql("server=localhost;database=incredispots_db_dev;Username=incredispots_root;password=12345");
 
@@ -60,6 +65,48 @@ public class IncrediSpotsMainDbContext : DbContext
                 .HasMaxLength(255)
                 .HasColumnName("Emoji");
 		});
+		modelBuilder.Entity<UserModel>(entity =>
+		{
+			entity.ToTable("users");
+
+			entity.HasKey(u => u.Id);
+
+			entity.HasIndex(u => u.Email).IsUnique();
+
+			entity.Property(u => u.Email)
+				.IsRequired()
+				.HasMaxLength(255);
+
+			entity.Property(u => u.PasswordHash)
+				.IsRequired();
+
+		});
+		modelBuilder.Entity<CommentModel>(entity =>
+		{
+			entity.HasKey(c => c.Id);
+
+			entity.Property(c => c.Text)
+				.IsRequired()
+				.HasMaxLength(1000);
+
+			entity.Property<DateTime>("CreatedAt")
+				.HasDefaultValueSql("CURRENT_TIMESTAMP");
+
+			entity.Property<int>("SpotId");
+			entity.Property<int>("AuthorId");
+
+			entity.HasOne(c => c.Spot)
+              .WithMany(s => s.Comments)
+              .HasForeignKey(c => c.SpotId)
+              .OnDelete(DeleteBehavior.Cascade);
+
+			entity.HasOne(c => c.Author)
+				.WithMany(u => u.Comments)
+				.HasForeignKey(c => c.AuthorId)
+				.OnDelete(DeleteBehavior.Cascade);
+
+		});
+
 	}
 	
 }
