@@ -1,9 +1,7 @@
 ﻿namespace IncrediSpots.Domain.Models;
 
-public class SpotCategoryModel
+public class SpotCategoryModel : BaseEntity
 {
-	public int Id { get; private set; }
-
 	public string Name { get; private set; } = string.Empty;
 	public string Emoji { get; private set; } = string.Empty;
 

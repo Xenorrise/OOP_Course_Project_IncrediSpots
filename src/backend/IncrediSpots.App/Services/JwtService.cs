@@ -6,6 +6,8 @@ using System.Text;
 using Microsoft.Extensions.Configuration;
 using IncrediSpots.Domain.Models;
 
+namespace IncrediSpots.App.Services;
+
 public class JwtService : IJwtService
 {
     private readonly IConfiguration _config;

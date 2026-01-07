@@ -2,9 +2,7 @@ using IncrediSpots.Domain.Models;
 
 namespace IncrediSpots.Domain.Interfaces;
 
-public interface IUserRepository
+public interface IUserRepository  : IRepository<UserModel>
 {
     Task<UserModel?> GetByEmailAsync(string email);
-	Task<UserModel> GetByIdAsync(int id);
-    Task AddAsync(UserModel user);
 }

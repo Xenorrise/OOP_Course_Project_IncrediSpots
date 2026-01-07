@@ -1,17 +1,13 @@
 namespace IncrediSpots.Domain.Models;
 
-public class CommentModel
+public class CommentModel : BaseEntity
 {
-	public int Id { get; private set; }
     public int SpotId { get; private set; }
-
     public int AuthorId { get; private set; }
     public string Text { get; } = string.Empty;
-    public SpotModel? Spot { get; private set; }
-    public UserModel Author { get; private set; }
-    public DateTime CreatedAt { get; }
-
-	public CommentModel() { }
+    public SpotModel Spot { get; private set; } = null!;
+    public UserModel Author { get; private set; } = null!;
+	protected CommentModel() { }
     public CommentModel(string text, SpotModel spot, UserModel author)
     {
         Text = text;

@@ -3,6 +3,7 @@ using System;
 using IncrediSpots.DataAccess.Context;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
@@ -11,9 +12,11 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace IncrediSpots.DataAccess.Data.Migrations
 {
     [DbContext(typeof(IncrediSpotsMainDbContext))]
-    partial class IncrediSpotsMainDbContextModelSnapshot : ModelSnapshot
+    [Migration("20260106172149_StructureUpdate")]
+    partial class StructureUpdate
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder

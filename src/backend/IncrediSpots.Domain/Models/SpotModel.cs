@@ -1,9 +1,7 @@
 ﻿namespace IncrediSpots.Domain.Models;
 
-public class SpotModel
+public class SpotModel : BaseEntity
 {
-	public int Id { get; private set; }
-
 	public string Title { get; private set; } = string.Empty;
     public string Description { get; private set; } = string.Empty;
 
@@ -15,8 +13,6 @@ public class SpotModel
     public double? Longitude { get; private set; }
 
 	public int Rating { get; private set; }
-
-	public DateTime CreatedAt { get; private set; }
 
 	public int? UserId { get; private set; }
 

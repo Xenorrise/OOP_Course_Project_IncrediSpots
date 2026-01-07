@@ -1,13 +1,11 @@
 namespace IncrediSpots.Domain.Models;
 
-public class UserModel
+public class UserModel : BaseEntity
 {
-    public int Id { get; private set; }
     public string Email { get; private set; } = null!;
     public string PasswordHash { get; private set; } = null!;
-    public DateTime CreatedAt { get; private set; }
 
-    private UserModel() {}
+    protected UserModel() { }
 
     public UserModel(string email, string passwordHash)
     {

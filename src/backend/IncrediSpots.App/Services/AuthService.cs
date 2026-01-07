@@ -2,6 +2,8 @@ using IncrediSpots.App.Interfaces;
 using IncrediSpots.Domain.Models;
 using IncrediSpots.Domain.Interfaces;
 
+namespace IncrediSpots.App.Services;
+
 public class AuthService : IAuthService
 {
     private readonly IUserRepository _users;

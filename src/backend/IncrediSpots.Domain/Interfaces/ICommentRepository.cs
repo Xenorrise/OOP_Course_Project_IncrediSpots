@@ -1,8 +1,7 @@
 using IncrediSpots.Domain.Models;
 
 namespace IncrediSpots.Domain.Interfaces;
-public interface ICommentRepository
+public interface ICommentRepository : IRepository<CommentModel>
 {
-    Task AddAsync(CommentModel comment);
     Task<List<CommentModel>> GetAllBySpotIdAsync(int spotId);
 }

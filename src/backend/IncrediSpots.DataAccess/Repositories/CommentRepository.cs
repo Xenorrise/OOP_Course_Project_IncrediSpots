@@ -3,18 +3,13 @@ using IncrediSpots.Domain.Models;
 using IncrediSpots.Domain.Interfaces;
 using Microsoft.EntityFrameworkCore;
 
-public class CommentRepository : ICommentRepository
+public class CommentRepository : BaseRepository<CommentModel>, ICommentRepository
 {
-    private readonly IncrediSpotsMainDbContext _context;
+	public CommentRepository(IncrediSpotsMainDbContext context) : base(context){}
 
-    public CommentRepository(IncrediSpotsMainDbContext context)
+	public override async Task AddAsync(CommentModel comment)
     {
-        _context = context;
-    }
-
-    public async Task AddAsync(CommentModel comment)
-    {
-        _context.Comments.Add(comment);
+        await base.AddAsync(comment);
         await _context.SaveChangesAsync();
     }
 

@@ -4,16 +4,12 @@ using IncrediSpots.Domain.Interfaces;
 using Microsoft.EntityFrameworkCore;
 
 namespace KnowledgeApp.DataAccess.Repositories;
-public class SpotRepository : ISpotRepository
+
+public class SpotRepository : BaseRepository<SpotModel>, ISpotRepository
 {
-	private readonly IncrediSpotsMainDbContext _context;
+	public SpotRepository(IncrediSpotsMainDbContext context) : base(context){}
 
-	public SpotRepository(IncrediSpotsMainDbContext context)
-	{
-		_context = context;
-	}
-
-	public async Task<SpotModel> GetByIdAsync(int id)
+	public override async Task<SpotModel?> GetByIdAsync(int id)
 	{
 		var spot = await _context.Spots.FindAsync(id) ?? throw new Exception($"Spot with ID {id} not found");
 		return spot;
@@ -24,10 +20,10 @@ public class SpotRepository : ISpotRepository
 		return await _context.Spots.Include(s => s.Category).ToListAsync();
 	}
 
-	public async Task AddAsync(SpotModel spot)
+	public override async Task AddAsync(SpotModel spot)
 	{
-		await _context.Spots.AddAsync(spot);
-		await _context.SaveChangesAsync();
+		await base.AddAsync(spot);
+        await _context.SaveChangesAsync();
 	}
 
 	public async Task UpdateAsync(SpotModel newSpot)
